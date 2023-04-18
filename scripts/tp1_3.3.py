@@ -12,10 +12,10 @@ for row in resultado:
         print(row)
 
 print("\n(b) Dado um produto, listar os produtos similares com maiores vendas do que ele")
-#cur.execute(" ")
-#resultado = cur.fetchall()
-#for row in resultado:
-        #print(row)
+cur.execute("SELECT a.asin, a.title, a.salesrank FROM product JOIN similar_products ON product.asin = similar_products.asin_product_2 JOIN product a ON similar_products.id_product_1 = a.id WHERE product.asin = '0827229534' AND a.salesrank < product.salesrank ORDER BY a.salesrank ASC LIMIT 10;")
+resultado = cur.fetchall()
+for row in resultado:
+        print(row)
 
 print("\n(c) Dado um produto, mostrar a evolução diária das médias de avaliação ao longo do intervalo de tempo coberto no arquivo de entrada")
 cur.execute("SELECT date_trunc('day', comment.date) AS data,AVG(comment.rating) AS media_avaliacao FROM comment JOIN product ON comment.id_product = product.id WHERE product.asin = '0827229534' AND comment.date BETWEEN (SELECT MIN(date) FROM comment WHERE id_product = product.id) AND (SELECT MAX(date) FROM comment WHERE id_product = product.id) GROUP BY date_trunc('day', comment.date) ORDER BY data;")
